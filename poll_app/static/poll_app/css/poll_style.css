@@ -1,0 +1,16 @@
+body{
+    background-color: hotpink;
+}
+
+.card {
+    color: #333;
+    background-color: rgba(236, 196, 247, 0.7);
+    border-color: rgba(245, 245, 220, .6);
+    /* border radious
+    border-top-left-radius: 0;
+    border-top-right-radius: 0; 
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    */
+    margin-top: 1rem;
+}

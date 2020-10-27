@@ -1,0 +1,8 @@
+poll_app/__pycache__
+poll_app/migrations/__pycache__
+testform/
+the_app/
+vote_app/
+voting_panel/
+db.sqlite3
+

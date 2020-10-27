@@ -1,0 +1,62 @@
+{% extends "poll_app/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Create{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Create your own Poll</h3>
+                </div>
+                <!-- Form -->
+                <form action="{% url 'poll_app:create' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Question row -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="question">Enter question</label>
+                                    <!-- <input name="question" id="question" class="form-control"> -->
+                                    {% render_field form.question class="form-control" rows="2" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Options -->
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="option1">First option</label>
+                                    <!-- <input type="text" name="option1" id="option1" class="form-control" placeholder="Enter first option"> -->
+                                    {% render_field form.option1 class="form-control" placeholder="Enter first option" %}
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="option2">Second option</label>
+                                    {% render_field form.option2 class="form-control" placeholder="Enter second option" %}
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="option3">Third option</label>
+                                    {% render_field form.option3 class="form-control" placeholder="Enter third option" %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Submit button -->
+                        <div class="row">
+                            <hr />
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-info">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
