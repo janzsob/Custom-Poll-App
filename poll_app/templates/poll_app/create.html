@@ -1,48 +1,40 @@
 {% extends "poll_app/base.html" %}
 {% load widget_tweaks %}
+{% load crispy_forms_tags %}
 
 {% block title %}Create{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row justify-content-md-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <h3>Create your own Poll</h3>
                 </div>
                 <!-- Form -->
-                <form action="{% url 'poll_app:create' %}" method="POST">
+                <form action="{% url 'poll_app:create' %}" method="POST" class="needs-validation" novalidate>
                     {% csrf_token %}
                     <div class="card-body">
-                        <div class="row">
-                            <!-- Question row -->
+                        <div class="row"> <!-- Question row -->
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="question">Enter question</label>
+                                    <label for="question">Enter question:</label>
                                     <!-- <input name="question" id="question" class="form-control"> -->
-                                    {% render_field form.question class="form-control" rows="2" %}
+                                    <!-- <strong>{{ question_form.as_p }}</strong> -->
+                                    {% render_field question_form.question_text class="form-control" rows="2" col="10" %}
+                                    <div class="invalid-feedback">
+                                        Please enter your question for the Poll.
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <!-- Options -->
-                            <div class="col-lg-4">
+                        <div class="row justify-content-md-center"> <!-- Choices row -->
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="option1">First option</label>
+                                    <!-- <label for="option1">First option</label> -->
                                     <!-- <input type="text" name="option1" id="option1" class="form-control" placeholder="Enter first option"> -->
-                                    {% render_field form.option1 class="form-control" placeholder="Enter first option" %}
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="option2">Second option</label>
-                                    {% render_field form.option2 class="form-control" placeholder="Enter second option" %}
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="option3">Third option</label>
-                                    {% render_field form.option3 class="form-control" placeholder="Enter third option" %}
+                                    <label class="pb-2 pt-2">Enter your choice options here. At least two!</label>
+                                    {{ formset|crispy }}
                                 </div>
                             </div>
                         </div>
@@ -59,4 +51,25 @@
         </div>
     </div>
 </div>
+<!-- Some JavaScript code for custom validation for form -->
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    </script>
 {% endblock content %}

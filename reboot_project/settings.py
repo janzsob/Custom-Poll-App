@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "voting_panel.apps.VotingPanelConfig", # voting_panel
     "poll_app.apps.PollAppConfig", # poll_app
     "widget_tweaks",
+    "crispy_forms",
 ]
 
 MIDDLEWARE = [

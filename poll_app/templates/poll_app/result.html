@@ -9,23 +9,22 @@
                     <h2 class="card-tittle">Poll results</h2>
                 </div>
                 <div class="card-body bg-light">
-                    <h4>{{ poll.question }}</h4>
+                    <h4>{{ poll.question_text }}</h4>
                     <hr />
                     <div class="row justify-content-center mb-2 mt-3">
+                        {% for choice in poll.choice_set.all %}
                         <div class="col-md-4">
-                            <span>{{ poll.option1 }} &mdash; <strong>{{ poll.option1_votes }}</strong></span>
+                            <span>{{ choice.choice_text }} &mdash; <strong>{{ choice.votes }}</strong></span>
                         </div>
-                        <div class="col-md-4">
-                            {{ poll.option2 }} &mdash; <strong>{{ poll.option2_votes }}</strong>
-                        </div>
-                        <div class="col-md-4">
-                            {{ poll.option3 }} &mdash; <strong>{{ poll.option3_votes }}</strong>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="card-footer">
-                    Total votes &mdash; <strong>{{ poll.total }}</strong>
-                    <span class="float-right"><a href="{% url 'poll_app:home' %}" class="btn btn-primary">Back home</a></span>
+                    <!-- Total votes &mdash; <strong>{{ poll.total }}</strong> -->
+                    <span class="float-right">
+                        <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info">Vote</a>
+                        <a href="{% url 'poll_app:home' %}" class="btn btn-primary">Back home</a>
+                    </span>
                 </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@
                 <ul class="list-group list-group-flush">
                     {% for poll in polls %}
                     <li class="list-group-item">
-                        <strong>{{ poll.question }}</strong>
+                        <strong>{{ poll.question_text }}</strong>
                         <span class="float-right">
                             <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info">Vote</a>
                             <a href="{% url 'poll_app:result' poll.id %}" class="btn btn-success">View results</a>
