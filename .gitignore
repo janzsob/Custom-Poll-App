@@ -5,4 +5,6 @@ the_app/
 vote_app/
 voting_panel/
 db.sqlite3
+reboot_project/__pycache__
+static/
 
