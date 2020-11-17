@@ -92,10 +92,10 @@
 			<a class="nav-link" href="{% url 'poll_app:create' %}">Create</a>
 		</li>
 		</ul>
-		<form class="form-inline">
-		<input class="form-control ml-md-5" type="search" placeholder="Search" aria-label="Searchs">
-		<button class="btn btn-outline-success ml-md-2" type="submit">Search</button>
-		</form>
+		<form class="form-inline" action="{% url 'poll_app:search_results' %}" method="GET">
+            <input class="form-control ml-md-5" name="s" type="search" placeholder="Search for categories..." aria-label="Searchs">
+            <button class="btn btn-outline-success ml-md-2" type="submit">Search</button>
+        </form>
 		<ul class="navbar-nav flex-row ml-auto">
 		{% if request.user.authenticated %}
 		<h4 class="nav-link mt-1">Hello, <span class="">{{ request.user }}</span></h4>

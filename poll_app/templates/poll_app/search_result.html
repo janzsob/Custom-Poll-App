@@ -1,0 +1,37 @@
+{% extends "poll_app/base.html" %}
+{% block title %}Search results{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Search results</h3>
+                </div>
+                <div class="card-body p-0">
+                {% for result in results %}    
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <span><strong>{{ result.question_text }}</strong></span><br>
+                                    <footer class="badge badge-dark d-inline mr-3">#{{ result.category }}</footer>
+                                    <footer class="text-muted d-inline">Pub: {{ result.pupblish_date|date:"M. d, Y, H:i" }}</footer>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="{% url 'poll_app:result' result.id %}" class="btn btn-success float-right mt-1">View results</a>
+                                    <a href="{% url 'poll_app:vote' result.id %}" class="btn btn-info float-right mr-1 mt-1">Vote</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <hr class="m-0" style="color: red;">
+                {% endfor %}
+                </div>
+                
+            </div><!-- Card end -->
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

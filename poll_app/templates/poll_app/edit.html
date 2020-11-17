@@ -2,25 +2,34 @@
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
 
-{% block title %}Create{% endblock %}
+{% block title %}Edit{% endblock %}
 {% block content %}
 <div class="container">
     <div class="row justify-content-md-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h3>Create your own Poll</h3>
+                    <h3>Edit your own Poll</h3>
                 </div>
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="row justify-content-center mt-1">
+                        <div class="col-md-4 alert alert-info text-center mb-0 bg-danger text-white" role="alert">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% endif %}
                 <!-- Form -->
-                <form action="{% url 'poll_app:create' %}" method="POST" class="needs-validation" novalidate>
+                <form action="" method="POST" class="needs-validation" novalidate>
                     {% csrf_token %}
                     <div class="card-body">
                         <div class="row form-group"> <!-- Question row -->
                             <div class="col-md-12">                                
-                                <label for="question">Enter question:</label>
+                                <label for="question">Question:</label>
                                 <!-- <input name="question" id="question" class="form-control"> -->
                                 <!-- <strong>{{ question_form.as_p }}</strong> -->
-                                {% render_field question_form.question_text class="form-control" rows="2" col="8" %}
+                                {% render_field form.question_text class="form-control" rows="2" col="8" %}
                                 <div class="invalid-feedback">
                                     Please enter your question for the Poll.
                                 </div>
@@ -29,7 +38,7 @@
                         <div class="row form-group">
                             <label class="col-md-2 col-form-label">Category: </label>
                             <div class="col-md-10">
-                                {% render_field question_form.category class="form-control" placeholder="Add category to the poll" %}
+                                {% render_field form.category class="form-control" placeholder="Add category to the poll" %}
                             </div>
                         </div>
                         <div class="row justify-content-md-center"> <!-- Choices row -->
@@ -37,8 +46,8 @@
                                 <div class="form-group">
                                     <!-- <label for="option1">First option</label> -->
                                     <!-- <input type="text" name="option1" id="option1" class="form-control" placeholder="Enter first option"> -->
-                                    <label class="pb-2 pt-2">Enter your choice options here. At least two!</label>
-                                    {{ formset|crispy }}
+                                    <br>
+                                    {{ formset.as_p }}
                                 </div>
                             </div>
                         </div>

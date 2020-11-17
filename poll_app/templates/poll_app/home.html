@@ -15,20 +15,37 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-tittle">Available polls</h3>
+                    <h3>Available polls</h3>
                 </div>
-                <ul class="list-group list-group-flush">
-                    {% for poll in polls %}
-                    <li class="list-group-item">
-                        <strong>{{ poll.question_text }}</strong>
-                        <span class="float-right">
-                            <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info">Vote</a>
-                            <a href="{% url 'poll_app:result' poll.id %}" class="btn btn-success">View results</a>
-                        </span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+                <div class="card-body p-0">
+                {% for poll in polls %}    
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <span><strong>{{ poll.question_text }}</strong></span><br>
+                                    <footer class="badge badge-dark d-inline">#{{ poll.category }}</footer>
+                                    <footer class="d-inline mr-2 ml-3"><span class="text-muted">Pub: </span>{{ poll.pupblish_date|date:"M. d, Y, H:i" }}</footer>
+                                    <footer class="d-inline"><span class="text-muted m-0">Author: </span>{{ poll.author.username }}</footer>
+                                </div>
+                                <div class="col-md-5">
+                                    <a href="{% url 'poll_app:result' poll.id %}" class="btn btn-success btn-sm float-right mt-1">View results</a>
+                                    <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info btn-sm float-right mr-1 mt-1 ml-1">Vote</a>
+                                    {% if request.user.is_authenticated %}
+                                        {% if poll.author == request.user %}
+                                            <a class="btn btn-warning btn-sm float-right mt-1" href="{% url 'poll_app:edit' poll.id %}">Edit</a>
+                                            <a class="btn btn-danger btn-sm float-right mt-1 mr-1" href="{% url 'poll_app:delete' poll.id %}">Delete</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <hr class="m-0" style="color: red;">
+                {% endfor %}
+                </div>
+                
+            </div><!-- Card end -->
         </div>
     </div>
 </div>

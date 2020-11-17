@@ -3,14 +3,21 @@ body{
 }
 
 .card {
-    color: #333;
+    border-radius: 0;
+    border: 0;
+    /*
     background-color: rgba(236, 196, 247, 0.7);
     border-color: rgba(245, 245, 220, .6);
-    /* border radious
-    border-top-left-radius: 0;
-    border-top-right-radius: 0; 
+    */
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem; 
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    */
     margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-header {
+    background-color: rgb(68, 85, 109);
+    color: white;
 }

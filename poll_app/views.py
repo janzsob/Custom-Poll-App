@@ -4,6 +4,7 @@ from .models import Poll, Question, Choice
 from django.http import HttpResponse
 from django.urls import reverse
 from django.forms.formsets import formset_factory
+from django.forms import inlineformset_factory
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -50,12 +51,15 @@ def create_view(request):
         messages.warning(request, 'You have to log in to be allowed creating poll.')
         return redirect("poll_app:login")
         
-    ChoiceFormSet = formset_factory(ChoiceForm, extra=1, min_num=2, validate_min=True)
+    ChoiceFormSet = formset_factory(ChoiceForm, min_num=2, extra=1, validate_min=True)
     if request.method == "POST":
         question_form = QuestionForm(request.POST)
         formset = ChoiceFormSet(request.POST)
         if question_form.is_valid() and formset.is_valid():
-            poll = question_form.save()
+            if question_form.cleaned_data:
+                poll = question_form.save(commit=False)
+                poll.author = request.user
+                poll.save()
             for inline_form in formset:
                 if inline_form.cleaned_data:
                     choice = inline_form.save(commit=False)
@@ -162,7 +166,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect("poll_app:create")
+            return redirect("poll_app:home")
         else:
             messages.info(request, "Username or password is incorrect")
 
@@ -190,3 +194,48 @@ def register_view(request):
                 return redirect("poll_app:login")
         context = {"form": form}
         return render(request, "poll_app/register.html", context)
+
+# View for search results
+class SearchResultsView(generic.ListView):
+    model = Question
+    template_name = "poll_app/search_result.html"
+    context_object_name = "results"
+
+    def get_queryset(self):
+        query = self.request.GET.get("s")
+        object_list = Question.objects.filter(category__icontains=query)
+        return object_list
+
+# view for edit poll
+def update_poll(request, pk):
+    poll = Question.objects.get(id=pk)
+    ChoiceInlineFormset = inlineformset_factory(Question, Choice, fields=["choice_text"], max_num=3)
+    form = QuestionForm(instance=poll)
+    formset = ChoiceInlineFormset(instance=poll)
+
+    if request.method == "POST":
+        if poll.author == request.user:
+            form = QuestionForm(request.POST, instance=poll)
+            formset = ChoiceInlineFormset(request.POST, instance=poll)
+            if form.is_valid() and formset.is_valid():
+                form.save()
+                formset.save()
+                return redirect("poll_app:home")
+        else:
+            messages.warning(request, "You are not entitled to modify the poll because you are not its Author.")
+
+    context = {"form": form, "formset": formset}
+    return render(request, "poll_app/edit.html", context)
+
+# View for delet poll
+
+def delete_view(request, pk):
+    poll = Question.objects.get(id=pk)
+    if request.method == "POST":
+        if poll.author == request.user:
+            poll.delete()
+            return redirect("poll_app:home")
+        else:
+            messages.warning(request, "You are not entitled to delete the poll because you are not its Author.")    
+    context = {"poll": poll}
+    return render(request, "poll_app/delete.html", context)

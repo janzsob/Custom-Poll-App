@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils.timezone import now
+from datetime import datetime
+from django.contrib.auth.models import User
 
 class Poll(models.Model):
     question = models.TextField()
@@ -17,6 +20,9 @@ class Poll(models.Model):
 
 class Question(models.Model):
     question_text = models.TextField("Question", max_length=300)
+    category = models.CharField(max_length=100)
+    pupblish_date = models.DateTimeField(default=now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.question_text
