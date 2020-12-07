@@ -31,9 +31,11 @@ class ChoiceForm(forms.ModelForm):
             "choice_text": ("Option")
         }
         """
+        """
         help_texts = {
-            "choice_text": ("Give a choice as an aswer of your question. ")
-        }
+            "choice_text": ("Give an optional answer for your question.")
+        }        
+        """
 
 class CustomCreateUserForm(UserCreationForm):
     class Meta:

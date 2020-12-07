@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user, allowed_users
+from django.core.paginator import Paginator
 
 # view for rendering home page
 """
@@ -25,7 +26,10 @@ def home_view(request):
 @allowed_users(allowed_roles=["admin"])
 """
 def home_view(request):
-    polls = Question.objects.all()
+    poll = Question.objects.all().order_by("-id")
+    paginator = Paginator(poll, 5)
+    page = request.GET.get("page")
+    polls = paginator.get_page(page)
     context = {"polls": polls}
     return render(request, "poll_app/home.html", context)
 
@@ -48,7 +52,7 @@ def create_view(request):
 """
 def create_view(request):
     if not request.user.is_authenticated:
-        messages.warning(request, 'You have to log in to be allowed creating poll.')
+        messages.warning(request, 'You have to log in to be allowed to create poll.')
         return redirect("poll_app:login")
         
     ChoiceFormSet = formset_factory(ChoiceForm, min_num=2, extra=1, validate_min=True)
@@ -152,7 +156,7 @@ class ResultView(generic.DetailView):
     template_name = "poll_app/result.html"
 
 # View for login page
-@unauthenticated_user
+@unauthenticated_user # See it in decorators.py
 def login_view(request):
     """
     if request.user.is_authenticated: # Info message, if the user try to log in, when he is logged in
@@ -200,11 +204,22 @@ class SearchResultsView(generic.ListView):
     model = Question
     template_name = "poll_app/search_result.html"
     context_object_name = "results"
+    paginate_by = 5
+    """pagination context name: page_obj"""
 
     def get_queryset(self):
-        query = self.request.GET.get("s")
+        query = self.request.GET.get("s") # s: name of search form input
         object_list = Question.objects.filter(category__icontains=query)
         return object_list
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('s')
+        return context
+    
+"""
+https://stackoverflow.com/questions/57883376/error-cannot-use-none-as-a-query-value-when-trying-to-paginate-with-listview
+"""
 
 # view for edit poll
 def update_poll(request, pk):
