@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CreatePollForm, QuestionForm, ChoiceForm, CustomCreateUserForm
-from .models import Poll, Question, Choice
+from .forms import QuestionForm, ChoiceForm, CustomCreateUserForm
+from .models import Question, Choice, Vote
 from django.http import HttpResponse
 from django.urls import reverse
 from django.forms.formsets import formset_factory
@@ -14,13 +14,6 @@ from .decorators import unauthenticated_user, allowed_users
 from django.core.paginator import Paginator
 
 # view for rendering home page
-"""
-def home_view(request):
-    polls = Poll.objects.all()
-    context = {"polls": polls}
-    return render(request, "poll_app/home.html", context)
-"""
-
 """
 @login_required(login_url="poll_app:login")
 @allowed_users(allowed_roles=["admin"])
@@ -117,31 +110,34 @@ def vote_view(request, poll_id):
         selected_choice.save()
         return HttpResponseRedirect(reverse("poll_app:result", args=(poll.id,)))
 """
-def vote_view(request, poll_id):
-    poll = get_object_or_404(Question, pk=poll_id)
-    if request.method == "POST":
-        try:
-            selected_choice = poll.choice_set.get(pk=request.POST["clap"])    
-        except(KeyError):
-            return render(request, "poll_app/vote.html", {
-                "poll": poll, 
-                "error_message": "You haven't voted yet!"
-                })
-        else:
-            selected_choice.votes += 1
-            selected_choice.save()
-            return redirect(reverse("poll_app:result", args=(poll.id,)))
-    else:
-        context = {"poll": poll}
-        return render(request, "poll_app/vote.html", context)
 
-"""
-# view for results with one model
-def result_view(request, poll_id):
-    poll = Poll.objects.get(pk=poll_id)
-    context = {"poll": poll}
-    return render(request, "poll_app/result.html", context)
-"""
+def vote_view(request, poll_id):
+    if not request.user.is_authenticated:
+            messages.warning(request, 'You have to log in to be allowed to vote.')
+            return redirect("poll_app:login")
+    else:    
+        poll = get_object_or_404(Question, pk=poll_id)
+        if Vote.objects.filter(question=poll, voter=request.user).exists():
+            messages.error(request,"Already Voted on this choice")
+            return redirect("poll_app:home")
+        else:
+            if request.method == "POST":
+                try:
+                    selected_choice = poll.choice_set.get(pk=request.POST["clap"])    
+                except(KeyError):
+                    return render(request, "poll_app/vote.html", {
+                        "poll": poll, 
+                        "error_message": "You haven't voted yet!"
+                        })
+                else:
+                    selected_choice.votes += 1
+                    selected_choice.save()
+                    Vote.objects.create(voter = request.user, question=poll)
+                    return redirect(reverse("poll_app:result", args=(poll.id,)))
+            else:
+                context = {"poll": poll}
+                return render(request, "poll_app/vote.html", context)
+
 """
 # view for results with multiple models
 def result_view(request, poll_id):
