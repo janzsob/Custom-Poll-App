@@ -219,7 +219,7 @@ https://stackoverflow.com/questions/57883376/error-cannot-use-none-as-a-query-va
 
 # view for edit poll
 def update_poll(request, pk):
-    poll = Question.objects.get(id=pk)
+    poll = Question.objects.get(pk=pk)
     ChoiceInlineFormset = inlineformset_factory(Question, Choice, fields=["choice_text"], max_num=3)
     form = QuestionForm(instance=poll)
     formset = ChoiceInlineFormset(instance=poll)
@@ -241,7 +241,7 @@ def update_poll(request, pk):
 # View for delet poll
 
 def delete_view(request, pk):
-    poll = Question.objects.get(id=pk)
+    poll = Question.objects.get(pk=pk)
     if request.method == "POST":
         if poll.author == request.user:
             poll.delete()

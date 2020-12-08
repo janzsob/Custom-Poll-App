@@ -22,7 +22,7 @@
   </head>
   <body>
       <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'poll_app:home' %}">Poll Application</a>
+        <a class="navbar-brand p-0 ml-1 mr-1" id="navbar_brand" href="{% url 'poll_app:home' %}"><img src="/static/embedded_icons/survey.svg" alt="Survey_icon" height="30" width="30">Polio</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,7 +43,7 @@
           </form>
           <ul class="navbar-nav flex-row ml-auto">            
             {% if request.user.is_authenticated %}
-            <h4 class="nav-link mt-1">Hello, <span class="">{{ request.user }}</span></h4>
+            <h4 class="nav-link mt-1 mb-0 mr-2" id="user_name">Hello, <span>{{ request.user }}!</span></h4>
             <li>
               <a class="nav-link" href="{% url 'poll_app:logout' %}"><button class="btn btn-danger">Logout</button></a>
             </li>

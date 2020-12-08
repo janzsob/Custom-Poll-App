@@ -11,19 +11,25 @@
                 <div class="card-body bg-light">
                     <h4>{{ poll.question_text }}</h4>
                     <hr />
-                    <div class="row justify-content-center mb-2 mt-3">
-                        {% for choice in poll.choice_set.all %}
-                        <div class="col-md-4">
-                            <span>{{ choice.choice_text }} &mdash; <strong>{{ choice.votes }}</strong></span>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            {% for choice in poll.choice_set.all %}
+                        
+                            <span class="mr-5 ml-5">{{ choice.choice_text }} &mdash; <strong>{{ choice.votes }}</strong></span>
+                        
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                 </div>
                 <div class="card-footer">
                     <!-- Total votes &mdash; <strong>{{ poll.total }}</strong> -->
-                    <span class="float-right">
-                        <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info">Vote</a>
-                        <a href="{% url 'poll_app:home' %}" class="btn btn-primary">Back home</a>
+                    <span class="">
+                        {% if poll.author == request.user %}
+                        <a class="float-left mr-3" href="{% url 'poll_app:edit' poll.id %}"><img src="/static/embedded_icons/edit_logo.svg" alt="Edit" height="30" width="30"></a>
+                        <a class="btn btn-danger float-left" href="{% url 'poll_app:delete' poll.id %}">Delete</a>    
+                        {% endif %}
+                        <a href="{% url 'poll_app:home' %}" class="btn btn-primary float-right">Back home</a>
+                        <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info float-right mr-2">Vote</a>
                     </span>
                 </div>
                 </div>

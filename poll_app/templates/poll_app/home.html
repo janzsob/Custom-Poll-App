@@ -29,14 +29,8 @@
                                     <footer class="d-inline"><span class="text-muted m-0">Author: </span>{{ poll.author.username }}</footer>
                                 </div>
                                 <div class="col-md-5">
-                                    <a href="{% url 'poll_app:result' poll.id %}" class="btn btn-success btn-sm float-right mt-1">View results</a>
-                                    <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info btn-sm float-right mr-1 mt-1 ml-1">Vote</a>
-                                    {% if request.user.is_authenticated %}
-                                        {% if poll.author == request.user %}
-                                            <a class="btn btn-warning btn-sm float-right mt-1" href="{% url 'poll_app:edit' poll.id %}">Edit</a>
-                                            <a class="btn btn-danger btn-sm float-right mt-1 mr-1" href="{% url 'poll_app:delete' poll.id %}">Delete</a>
-                                        {% endif %}
-                                    {% endif %}
+                                    <a href="{% url 'poll_app:result' poll.id %}" class="btn btn-success float-right mt-1">View results</a>
+                                    <a href="{% url 'poll_app:vote' poll.id %}" class="btn btn-info float-right mr-1 mt-1 ml-1">Vote</a>
                                 </div>
                             </div>
                         </li>

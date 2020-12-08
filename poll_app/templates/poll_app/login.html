@@ -72,12 +72,16 @@
 			padding: 10px;
 			margin-top: 10px;
 		}
+		/* Polio brand in navbar */
+		#navbar_brand {
+			font-weight: 600;
+		}
 	</style>
 
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-	<a class="navbar-brand" href="{% url 'poll_app:home' %}">Poll Application</a>
+	<a class="navbar-brand p-0 ml-1 mr-1" id="navbar_brand" href="{% url 'poll_app:home' %}"><img src="/static/embedded_icons/survey.svg" alt="Survey_icon" height="30" width="30">Polio</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
