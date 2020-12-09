@@ -1,9 +1,13 @@
 poll_app/__pycache__
 poll_app/migrations/__pycache__
-testform/
-the_app/
-vote_app/
-voting_panel/
+testform/__pycache__
+testform/migrations/__pycache__
+the_app/__pycache__
+the_app/migrations/__pycache__
+vote_app/__pycache__
+vote_app/migrations/__pycache__
+voting_panel/__pycache__
+voting_panel/migrations/__pycache__
 db.sqlite3
 reboot_project/__pycache__
 static/css
