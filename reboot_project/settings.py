@@ -37,10 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'the_app.apps.TheAppConfig', # added the_app
-    "testform", # testform added
-    "vote_app.apps.VoteAppConfig", # vote_app
-    "voting_panel.apps.VotingPanelConfig", # voting_panel
     "poll_app.apps.PollAppConfig", # poll_app
     "widget_tweaks",
     "crispy_forms",
