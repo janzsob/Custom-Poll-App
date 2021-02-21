@@ -1,5 +1,5 @@
 # Polio
-Polio is a cutsomn poll application built in Django and Bootstrap. 
+Polio is a cutsom poll application built in Django and Bootstrap. 
 
 ## General info
 Users can see different polls at Polio and they can post their own ones as well. The project was created based on the offical Django tutorial(https://docs.djangoproject.com/en/2.1/intro/tutorial01/) and was enhanced with some extra features:
